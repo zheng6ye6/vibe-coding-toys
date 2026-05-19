@@ -10,7 +10,7 @@
 npx --yes serve .
 ```
 
-浏览器打开提示的地址（一般为 http://localhost:3000）即可。
+浏览器打开提示的地址（一般为 [http://localhost:3000）即可。](http://localhost:3000）即可。)
 
 也可直接用浏览器打开 `index.html`（部分环境对本地脚本有限制，推荐用上面的方式）。
 
