@@ -49,19 +49,29 @@
 
     <!-- 结果页 -->
     <section id="screen-result" class="screen">
+      <div class="result-shell">
       <div class="result-card" id="result-card">
         <p class="result-label">你的提瓦特同调者是</p>
-        <div class="result-avatar" id="result-avatar" aria-hidden="true"></div>
-        <h2 id="result-name" class="result-name"></h2>
+        <div class="result-hero">
+          <div class="result-avatar" id="result-avatar" aria-hidden="true"></div>
+          <h2 id="result-name" class="result-name"></h2>
+        </div>
         <p id="result-type" class="result-type"></p>
+        <p id="result-flair" class="result-flair"></p>
         <p id="result-desc" class="result-desc"></p>
         <div class="result-traits" id="result-traits"></div>
         <p id="result-match" class="result-match"></p>
 
+        <section class="radar-section">
+          <h3 class="section-title">性格星芒 · 维度权重</h3>
+          <canvas id="radar-canvas" class="radar-canvas" width="280" height="280" aria-label="八维性格星芒图"></canvas>
+          <div id="radar-legend" class="radar-legend"></div>
+        </section>
+
         <section id="scene-section" class="scene-section hidden">
-          <h3 class="scene-title">试炼场景重现 · AI 描绘</h3>
+          <h3 class="section-title">试炼场景重现 · AI 描绘</h3>
           <p id="scene-caption" class="scene-caption"></p>
-          <div class="scene-frame">
+          <div class="scene-frame scene-frame-portrait">
             <p id="scene-loading" class="scene-loading">正在根据你的二十问选择生成场景插画…</p>
             <img id="scene-image" class="scene-image hidden" alt="根据答题生成的角色场景插画" />
           </div>
@@ -69,15 +79,17 @@
 
         <p id="share-status" class="share-status" aria-live="polite"></p>
         <div class="result-actions">
-          <button type="button" id="btn-share" class="btn-primary" disabled>分享（图片链接）</button>
-          <button type="button" id="btn-copy-image" class="btn-secondary" disabled>复制图片直链</button>
+          <button type="button" id="btn-share" class="btn-primary" disabled>分享我的试炼结果</button>
           <button type="button" id="btn-retry" class="btn-ghost">再次接受考验</button>
         </div>
+      </div>
       </div>
     </section>
   </main>
 
   <script src="data.js"></script>
+  <script src="decor.js"></script>
+  <script src="radar.js"></script>
   <script src="scene.js"></script>
   <script src="share.js"></script>
   <script src="app.js"></script>

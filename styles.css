@@ -442,10 +442,22 @@ body {
   }
 }
 
+.scene-frame-portrait {
+  max-width: 320px;
+  margin: 0 auto;
+}
+
+.scene-frame-portrait .scene-image {
+  width: 100%;
+  display: block;
+  aspect-ratio: 832 / 1248;
+  object-fit: cover;
+  object-position: center top;
+}
+
 .scene-image {
   width: 100%;
   display: block;
-  vertical-align: middle;
 }
 
 .share-status {
@@ -485,8 +497,147 @@ body {
   cursor: not-allowed;
 }
 
+#screen-result {
+  align-items: center;
+}
+
+.result-shell {
+  width: 100%;
+  max-width: 36rem;
+}
+
 #screen-result .result-card {
-  max-width: 32rem;
+  max-width: 36rem;
+  position: relative;
+  overflow: hidden;
+  padding-top: 7rem;
+  box-shadow:
+    0 0 0 1px var(--card-border),
+    0 16px 48px var(--element-glow, rgba(0, 0, 0, 0.4)),
+    inset 0 1px 0 rgba(255, 255, 255, 0.06);
+}
+
+.result-deco-layer {
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: 240px;
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.9;
+}
+
+.result-deco-svg {
+  width: 100%;
+  height: 100%;
+}
+
+.result-card > *:not(.result-deco-layer) {
+  position: relative;
+  z-index: 1;
+}
+
+.result-hero {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.35rem;
+  margin-bottom: 0.5rem;
+}
+
+.result-avatar {
+  font-size: 3.5rem;
+  filter: drop-shadow(0 0 24px var(--element-glow, rgba(212, 168, 83, 0.4)));
+  animation: avatar-float 4s ease-in-out infinite;
+}
+
+@keyframes avatar-float {
+  50% {
+    transform: translateY(-6px);
+  }
+}
+
+.result-flair {
+  font-size: 0.95rem;
+  color: var(--element-c2, var(--gold-bright));
+  font-style: italic;
+  line-height: 1.7;
+  margin: 0.75rem 0;
+  padding: 0.75rem 1rem;
+  border-left: 3px solid var(--element-c1, var(--gold));
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 0 8px 8px 0;
+  text-align: left;
+}
+
+.section-title {
+  font-size: 0.95rem;
+  color: var(--element-c1, var(--gold-bright));
+  letter-spacing: 0.1em;
+  margin-bottom: 0.75rem;
+  text-align: center;
+}
+
+.radar-section {
+  margin: 1.5rem 0;
+  padding: 1rem 0;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.radar-canvas {
+  display: block;
+  width: 100%;
+  max-width: 280px;
+  height: auto;
+  margin: 0 auto;
+}
+
+.radar-legend {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0.35rem 0.5rem;
+  margin-top: 0.75rem;
+  font-size: 0.72rem;
+  color: var(--text-muted);
+}
+
+.radar-legend-item b {
+  color: var(--element-c1, var(--gold));
+  margin-right: 0.15rem;
+}
+
+.result-card.element-pyro {
+  background: linear-gradient(165deg, rgba(40, 18, 12, 0.95) 0%, var(--card) 45%);
+}
+.result-card.element-hydro {
+  background: linear-gradient(165deg, rgba(12, 28, 48, 0.95) 0%, var(--card) 45%);
+}
+.result-card.element-anemo {
+  background: linear-gradient(165deg, rgba(16, 36, 28, 0.95) 0%, var(--card) 45%);
+}
+.result-card.element-electro {
+  background: linear-gradient(165deg, rgba(28, 16, 40, 0.95) 0%, var(--card) 45%);
+}
+.result-card.element-cryo {
+  background: linear-gradient(165deg, rgba(16, 28, 40, 0.95) 0%, var(--card) 45%);
+}
+.result-card.element-geo {
+  background: linear-gradient(165deg, rgba(36, 28, 12, 0.95) 0%, var(--card) 45%);
+}
+.result-card.element-dendro {
+  background: linear-gradient(165deg, rgba(20, 32, 16, 0.95) 0%, var(--card) 45%);
+}
+
+.result-card.char-furina::after,
+.result-card.char-mavuika::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 80px;
+  height: 80px;
+  background: radial-gradient(circle, var(--element-glow) 0%, transparent 70%);
+  pointer-events: none;
 }
 
 /* —— 分享页 —— */

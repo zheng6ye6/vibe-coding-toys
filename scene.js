@@ -3,7 +3,7 @@
  */
 const YSTIScene = (function () {
   const IMAGE_BASE = "https://image.pollinations.ai/prompt/";
-  const IMAGE_OPTS = "width=1024&height=576&nologo=true&model=flux";
+  const IMAGE_OPTS = "width=832&height=1248&nologo=true&model=flux";
 
   const ELEMENT_MOOD = {
     pyro: "warm golden and crimson light, passionate atmosphere",
