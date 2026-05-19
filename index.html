@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>YSTI · 原神性格试炼</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600;700&family=ZCOOL+XiaoWei&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="bg-stars" aria-hidden="true"></div>
+  <div class="bg-glow" aria-hidden="true"></div>
+
+  <main id="app">
+    <!-- 欢迎页 -->
+    <section id="screen-welcome" class="screen active">
+      <div class="welcome-center">
+        <p class="tagline">提瓦特性格映射 · YS Type Indicator</p>
+        <h1 class="ysti-title">YSTI</h1>
+        <p class="ysti-sub">二十问窥见本心，与哪位行者最为相近？</p>
+        <button type="button" id="btn-start" class="btn-primary">
+          你确定接受原神的考验吗
+        </button>
+      </div>
+    </section>
+
+    <!-- 答题页 -->
+    <section id="screen-quiz" class="screen">
+      <header class="quiz-header">
+        <span class="quiz-brand">YSTI</span>
+        <div class="progress-wrap">
+          <div class="progress-bar" id="progress-bar"></div>
+        </div>
+        <span class="progress-text" id="progress-text">1 / 20</span>
+      </header>
+
+      <article class="question-card">
+        <h2 id="question-text" class="question-text"></h2>
+        <ul id="options-list" class="options-list" role="radiogroup"></ul>
+      </article>
+
+      <footer class="quiz-footer">
+        <button type="button" id="btn-prev" class="btn-ghost" disabled>上一题</button>
+        <button type="button" id="btn-next" class="btn-primary" disabled>下一题</button>
+      </footer>
+    </section>
+
+    <!-- 结果页 -->
+    <section id="screen-result" class="screen">
+      <div class="result-card" id="result-card">
+        <p class="result-label">你的提瓦特同调者是</p>
+        <div class="result-avatar" id="result-avatar" aria-hidden="true"></div>
+        <h2 id="result-name" class="result-name"></h2>
+        <p id="result-type" class="result-type"></p>
+        <p id="result-desc" class="result-desc"></p>
+        <div class="result-traits" id="result-traits"></div>
+        <p id="result-match" class="result-match"></p>
+
+        <section id="scene-section" class="scene-section hidden">
+          <h3 class="scene-title">试炼场景重现 · AI 描绘</h3>
+          <p id="scene-caption" class="scene-caption"></p>
+          <div class="scene-frame">
+            <p id="scene-loading" class="scene-loading">正在根据你的二十问选择生成场景插画…</p>
+            <img id="scene-image" class="scene-image hidden" alt="根据答题生成的角色场景插画" />
+          </div>
+        </section>
+
+        <p id="share-status" class="share-status" aria-live="polite"></p>
+        <div class="result-actions">
+          <button type="button" id="btn-share" class="btn-primary" disabled>分享（图片链接）</button>
+          <button type="button" id="btn-copy-image" class="btn-secondary" disabled>复制图片直链</button>
+          <button type="button" id="btn-retry" class="btn-ghost">再次接受考验</button>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script src="data.js"></script>
+  <script src="scene.js"></script>
+  <script src="share.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

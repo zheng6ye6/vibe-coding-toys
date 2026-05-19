@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>YSTI · 分享结果</title>
+  <meta id="meta-desc" name="description" content="YSTI 原神性格试炼结果" />
+  <meta id="og-title" property="og:title" content="YSTI 原神性格试炼" />
+  <meta id="og-desc" property="og:description" content="查看我的提瓦特同调者" />
+  <meta id="og-image" property="og:image" content="" />
+  <meta property="og:type" content="website" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600&family=ZCOOL+XiaoWei&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+  <style>
+    body { margin: 0; min-height: 100vh; background: #0a0e1a; }
+  </style>
+</head>
+<body class="share-body">
+  <div class="bg-stars" aria-hidden="true"></div>
+  <main id="share-app" class="share-page">
+    <p id="share-loading" class="share-loading">正在还原你的试炼场景…</p>
+    <article id="share-content" class="share-content hidden">
+      <p class="share-brand">YSTI · 提瓦特性格试炼</p>
+      <img id="share-hero-img" class="share-hero-img" alt="性格场景重现" />
+      <h1 id="share-char-name" class="share-char-name"></h1>
+      <p id="share-meta" class="share-meta"></p>
+      <p id="share-scene-text" class="share-scene-text"></p>
+      <p id="share-desc" class="share-desc"></p>
+      <a id="share-image-link" class="share-image-link" href="#" target="_blank" rel="noopener">打开纯图片链接</a>
+      <a href="index.html" class="btn-primary share-cta">我也要接受考验</a>
+    </article>
+    <p id="share-error" class="share-error hidden">分享链接无效或已损坏，请重新测试。</p>
+  </main>
+  <script src="data.js"></script>
+  <script src="scene.js"></script>
+  <script src="share.js"></script>
+  <script src="share-page.js"></script>
+</body>
+</html>

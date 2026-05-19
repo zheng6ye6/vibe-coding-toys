@@ -1,0 +1,398 @@
+/**
+ * YSTI 题库与角色档案
+ * 题目改编自常见性格底色量表（四维度 × 各五题），选项映射 E/I、S/N、T/F、J/P
+ */
+
+const DIMENSIONS = ["EI", "SN", "TF", "JP"];
+
+const QUESTIONS = [
+  {
+    text: "在一个陌生的社交场合，你通常会：",
+    options: [
+      { label: "主动找人攀谈，很快融入氛围", scores: { EI: 2 } },
+      { label: "先观察一会儿，再选择性加入对话", scores: { EI: 1 } },
+      { label: "只和熟悉的人说话，保持小圈子", scores: { EI: -1 } },
+      { label: "宁愿独处或提前离开，感到消耗", scores: { EI: -2 } },
+    ],
+  },
+  {
+    text: "周末难得空闲，你更想：",
+    options: [
+      { label: "约朋友出门聚餐、逛街或旅行", scores: { EI: 2 } },
+      { label: "参加兴趣小组或线下活动", scores: { EI: 1 } },
+      { label: "在家做自己的事，偶尔回消息", scores: { EI: -1 } },
+      { label: "完全独处，看书、游戏或发呆", scores: { EI: -2 } },
+    ],
+  },
+  {
+    text: "遇到问题时，你倾向于：",
+    options: [
+      { label: "立刻找人讨论，边说边理清思路", scores: { EI: 2 } },
+      { label: "先聊几句，再自己静下来想", scores: { EI: 0 } },
+      { label: "独自想清楚大概，再选择性请教", scores: { EI: -1 } },
+      { label: "完全在内心推演，很少向外倾诉", scores: { EI: -2 } },
+    ],
+  },
+  {
+    text: "别人对你的第一印象更可能是：",
+    options: [
+      { label: "热情开朗，容易接近", scores: { EI: 2 } },
+      { label: "友善有礼，但不算张扬", scores: { EI: 1 } },
+      { label: "安静礼貌，有距离感", scores: { EI: -1 } },
+      { label: "冷淡神秘，难以看透", scores: { EI: -2 } },
+    ],
+  },
+  {
+    text: "长时间社交之后，你通常：",
+    options: [
+      { label: "仍然精力充沛，还想继续", scores: { EI: 2 } },
+      { label: "有点累但心情不错", scores: { EI: 1 } },
+      { label: "需要独处一阵才能恢复", scores: { EI: -1 } },
+      { label: "感到严重透支，必须立刻逃离", scores: { EI: -2 } },
+    ],
+  },
+  {
+    text: "学习或工作时，你更信任：",
+    options: [
+      { label: "亲身经历与可验证的事实", scores: { SN: 2 } },
+      { label: "步骤清晰、能立刻上手的做法", scores: { SN: 1 } },
+      { label: "理论与模型背后的规律", scores: { SN: -1 } },
+      { label: "直觉、联想和未来的可能性", scores: { SN: -2 } },
+    ],
+  },
+  {
+    text: "别人向你描述一件事时，你更关注：",
+    options: [
+      { label: "具体发生了什么、细节如何", scores: { SN: 2 } },
+      { label: "是否真实、有没有证据", scores: { SN: 1 } },
+      { label: "背后的动机与含义", scores: { SN: -1 } },
+      { label: "它可能引向怎样的未来", scores: { SN: -2 } },
+    ],
+  },
+  {
+    text: "你更欣赏的人是：",
+    options: [
+      { label: "脚踏实地、做事靠谱", scores: { SN: 2 } },
+      { label: "经验丰富、见多识广", scores: { SN: 1 } },
+      { label: "富有想象力、见解独到", scores: { SN: -1 } },
+      { label: "理想主义、能看透本质", scores: { SN: -2 } },
+    ],
+  },
+  {
+    text: "面对新任务，你通常会：",
+    options: [
+      { label: "按已有经验一步步来", scores: { SN: 2 } },
+      { label: "先弄清要求，再动手做", scores: { SN: 1 } },
+      { label: "先构想整体框架再细化", scores: { SN: -1 } },
+      { label: "跳跃式尝试，在摸索中创新", scores: { SN: -2 } },
+    ],
+  },
+  {
+    text: "你觉得自己更像：",
+    options: [
+      { label: "现实的观察者", scores: { SN: 2 } },
+      { label: "务实的执行者", scores: { SN: 1 } },
+      { label: "意义的追寻者", scores: { SN: -1 } },
+      { label: "可能性的探索者", scores: { SN: -2 } },
+    ],
+  },
+  {
+    text: "朋友做错事伤害了你，你更可能：",
+    options: [
+      { label: "直接指出问题，讲清道理", scores: { TF: 2 } },
+      { label: "冷静分析对错，再决定态度", scores: { TF: 1 } },
+      { label: "先顾及对方感受，委婉表达", scores: { TF: -1 } },
+      { label: "优先维护关系，不忍说重话", scores: { TF: -2 } },
+    ],
+  },
+  {
+    text: "团队做决策时，你认为最重要的是：",
+    options: [
+      { label: "公平与效率，谁对谁错要分明", scores: { TF: 2 } },
+      { label: "逻辑自洽，经得起推敲", scores: { TF: 1 } },
+      { label: "每个人的感受都被照顾到", scores: { TF: -1 } },
+      { label: "和谐氛围，避免有人受伤", scores: { TF: -2 } },
+    ],
+  },
+  {
+    text: "被人批评时，你内心第一反应是：",
+    options: [
+      { label: "对方说得对不对？哪里可以改", scores: { TF: 2 } },
+      { label: "先剥离情绪，看事实", scores: { TF: 1 } },
+      { label: "是不是我让人失望了", scores: { TF: -1 } },
+      { label: "对方是不是不喜欢我了", scores: { TF: -2 } },
+    ],
+  },
+  {
+    text: "你更容易被怎样的人打动：",
+    options: [
+      { label: "原则坚定、头脑清晰", scores: { TF: 2 } },
+      { label: "能力出众、值得信赖", scores: { TF: 1 } },
+      { label: "温柔体贴、善解人意", scores: { TF: -1 } },
+      { label: "真诚善良、富有共情", scores: { TF: -2 } },
+    ],
+  },
+  {
+    text: "在争论中，你更看重：",
+    options: [
+      { label: "真理与逻辑，哪怕伤了和气", scores: { TF: 2 } },
+      { label: "结论是否合理、能否执行", scores: { TF: 1 } },
+      { label: "双方是否还能做朋友", scores: { TF: -1 } },
+      { label: "气氛是否还能缓和下来", scores: { TF: -2 } },
+    ],
+  },
+  {
+    text: "面对即将到期的任务，你通常：",
+    options: [
+      { label: "提前规划，按日程完成", scores: { JP: 2 } },
+      { label: "列出清单，逐项勾选", scores: { JP: 1 } },
+      { label: "先放着，压力来了再冲刺", scores: { JP: -1 } },
+      { label: "随性发挥，截止前爆发", scores: { JP: -2 } },
+    ],
+  },
+  {
+    text: "你的房间或桌面一般是：",
+    options: [
+      { label: "井井有条，东西都有固定位置", scores: { JP: 2 } },
+      { label: "大体整齐，偶尔乱一下", scores: { JP: 1 } },
+      { label: "乱中有序，自己知道在哪", scores: { JP: -1 } },
+      { label: "比较随意，找到就行", scores: { JP: -2 } },
+    ],
+  },
+  {
+    text: "旅行时你更喜欢：",
+    options: [
+      { label: "行程表排好，景点提前预约", scores: { JP: 2 } },
+      { label: "大方向确定，细节可以微调", scores: { JP: 1 } },
+      { label: "只定目的地，路上随机探索", scores: { JP: -1 } },
+      { label: "说走就走，完全看当时心情", scores: { JP: -2 } },
+    ],
+  },
+  {
+    text: "对于规则和约定，你的态度是：",
+    options: [
+      { label: "应当遵守，破坏会带来混乱", scores: { JP: 2 } },
+      { label: "多数时候遵守，特殊情况可变通", scores: { JP: 0 } },
+      { label: "规则是参考，灵活更重要", scores: { JP: -1 } },
+      { label: "讨厌被束缚，喜欢保留选择", scores: { JP: -2 } },
+    ],
+  },
+  {
+    text: "你觉得自己的人生节奏更像：",
+    options: [
+      { label: "有清晰目标的直线", scores: { JP: 2 } },
+      { label: "阶段分明的阶梯", scores: { JP: 1 } },
+      { label: "不断分叉的小路", scores: { JP: -1 } },
+      { label: "随风飘荡、充满即兴", scores: { JP: -2 } },
+    ],
+  },
+];
+
+/** 16 位代表角色，各对应一种 MBTI 倾向（用于匹配） */
+const CHARACTERS = [
+  {
+    id: "venti",
+    name: "温迪",
+    mbti: "ENFP",
+    element: "anemo",
+    emoji: "🍃",
+    traits: ["自由", "诗意", "共情"],
+    desc: "你像吟游诗人一样热爱自由与可能性，用幽默与温柔化解沉重，总能在平凡里看见诗意与希望。",
+    vector: { EI: 2, SN: -2, TF: -1, JP: -2 },
+  },
+  {
+    id: "klee",
+    name: "可莉",
+    mbti: "ENFP",
+    element: "pyro",
+    emoji: "💥",
+    traits: ["热情", "好奇", "纯真"],
+    desc: "你充满好奇心与行动力，对世界保持孩童般的惊喜，偶尔莽撞却总能点亮周围的气氛。",
+    vector: { EI: 2, SN: -1, TF: -1, JP: -2 },
+  },
+  {
+    id: "jean",
+    name: "琴",
+    mbti: "ENFJ",
+    element: "anemo",
+    emoji: "⚔️",
+    traits: ["负责", "利他", "坚定"],
+    desc: "你天生肩负责任，愿意为众人付出，外表克制内心炽热，是值得信赖的领袖与守护者。",
+    vector: { EI: 2, SN: 1, TF: -1, JP: 2 },
+  },
+  {
+    id: "bennett",
+    name: "班尼特",
+    mbti: "ESFJ",
+    element: "pyro",
+    emoji: "🔥",
+    traits: ["乐观", "义气", "坚韧"],
+    desc: "你重视伙伴与归属感，即便屡遭挫折仍选择相信明天，用热情与忠诚温暖身边的每一个人。",
+    vector: { EI: 2, SN: 1, TF: -2, JP: 1 },
+  },
+  {
+    id: "hutao",
+    name: "胡桃",
+    mbti: "ESFP",
+    element: "pyro",
+    emoji: "👻",
+    traits: ["跳脱", "通透", "戏谑"],
+    desc: "你活得鲜明而当下，用玩笑包裹深刻，敢于直面生死与荒诞，在热闹中藏着对人世的温柔理解。",
+    vector: { EI: 2, SN: 2, TF: -1, JP: -2 },
+  },
+  {
+    id: "childe",
+    name: "达达利亚",
+    mbti: "ESTP",
+    element: "hydro",
+    emoji: "🌊",
+    traits: ["好战", "直率", "重情"],
+    desc: "你享受挑战与当下刺激，行事干脆、讨厌拖沓，对认定的人极度忠诚，在战斗与生活中都追求痛快。",
+    vector: { EI: 2, SN: 2, TF: 1, JP: -2 },
+  },
+  {
+    id: "keqing",
+    name: "刻晴",
+    mbti: "ENTJ",
+    element: "electro",
+    emoji: "⚡",
+    traits: ["高效", "务实", "革新"],
+    desc: "你目标明确、执行力强，相信人定胜天，敢于质疑旧规，用理性与魄力推动事情向前。",
+    vector: { EI: 1, SN: 1, TF: 2, JP: 2 },
+  },
+  {
+    id: "yae",
+    name: "八重神子",
+    mbti: "ENTP",
+    element: "electro",
+    emoji: "🦊",
+    traits: ["狡黠", "洞察", "从容"],
+    desc: "你思维敏捷、善于布局，喜欢用玩笑试探人心，在轻松表象下藏着对人性与局势的精准把握。",
+    vector: { EI: 1, SN: -1, TF: 1, JP: -1 },
+  },
+  {
+    id: "zhongli",
+    name: "钟离",
+    mbti: "INFJ",
+    element: "geo",
+    emoji: "🪨",
+    traits: ["沉稳", "契约", "远见"],
+    desc: "你重诺守信、思虑深远，习惯在幕后守护大局，用温和与坚定承载岁月沉淀的智慧。",
+    vector: { EI: -2, SN: -1, TF: 1, JP: 2 },
+  },
+  {
+    id: "nahida",
+    name: "纳西妲",
+    mbti: "INFJ",
+    element: "dendro",
+    emoji: "🌿",
+    traits: ["智慧", "慈悲", "求知"],
+    desc: "你细腻而富同理心，渴望理解万物，在安静中观察、在思考里成长，愿为信念长期守候。",
+    vector: { EI: -1, SN: -2, TF: -1, JP: 1 },
+  },
+  {
+    id: "kazuha",
+    name: "枫原万叶",
+    mbti: "INFP",
+    element: "anemo",
+    emoji: "🍁",
+    traits: ["洒脱", "感怀", "侠义"],
+    desc: "你内心柔软而重情义，漂泊中仍保有对美好的执念，以诗与刀守护心中所珍视之物。",
+    vector: { EI: -1, SN: -2, TF: -2, JP: -1 },
+  },
+  {
+    id: "wanderer",
+    name: "流浪者",
+    mbti: "INTP",
+    element: "anemo",
+    emoji: "🎭",
+    traits: ["孤傲", "思辨", "矛盾"],
+    desc: "你习惯用理性与刺来保护自己，在孤独中反复追问存在与价值，渴望被理解却难以轻易示弱。",
+    vector: { EI: -2, SN: -1, TF: 2, JP: -2 },
+  },
+  {
+    id: "ganyu",
+    name: "甘雨",
+    mbti: "ISFJ",
+    element: "cryo",
+    emoji: "❄️",
+    traits: ["勤勉", "内敛", "奉献"],
+    desc: "你默默承担、细致可靠，在职责与自我之间寻找平衡，用温柔与坚持守护长久的承诺。",
+    vector: { EI: -2, SN: 1, TF: -1, JP: 2 },
+  },
+  {
+    id: "ayaka",
+    name: "神里绫华",
+    mbti: "ISFJ",
+    element: "cryo",
+    emoji: "🌸",
+    traits: ["优雅", "礼节", "理想"],
+    desc: "你外柔内刚、重礼仪与心意，在束缚中仍向往真挚的情感与小小的任性，是冰雪中的白鸟。",
+    vector: { EI: -1, SN: 1, TF: -2, JP: 2 },
+  },
+  {
+    id: "albedo",
+    name: "阿贝多",
+    mbti: "INTJ",
+    element: "geo",
+    emoji: "⚗️",
+    traits: ["理性", "专注", "疏离"],
+    desc: "你以知识与逻辑为归依，沉浸于探索与创造，对世俗热闹保持距离，却在真理面前无比专注。",
+    vector: { EI: -2, SN: -1, TF: 2, JP: 1 },
+  },
+  {
+    id: "raiden",
+    name: "雷电将军",
+    mbti: "INTJ",
+    element: "electro",
+    emoji: "⚡",
+    traits: ["永恒", "决断", "执着"],
+    desc: "你目标宏大、原则分明，愿意为信念付出一切，在孤独中背负时代，以意志斩断迷惘。",
+    vector: { EI: -2, SN: -2, TF: 2, JP: 2 },
+  },
+  {
+    id: "diluc",
+    name: "迪卢克",
+    mbti: "ISTJ",
+    element: "pyro",
+    emoji: "🍷",
+    traits: ["自律", "正义", "孤行"],
+    desc: "你行事果决、标准严苛，习惯独自承担黑夜中的责任，用沉默与行动守护所认定的正义。",
+    vector: { EI: -2, SN: 2, TF: 2, JP: 2 },
+  },
+  {
+    id: "razor",
+    name: "雷泽",
+    mbti: "ISTP",
+    element: "electro",
+    emoji: "🐺",
+    traits: ["本能", "忠诚", "质朴"],
+    desc: "你相信直觉与行动胜过言辞，对伙伴极度忠诚，在简单直接的世界里守护属于自己的族群。",
+    vector: { EI: -2, SN: 2, TF: 1, JP: -2 },
+  },
+];
+
+const CHARACTER_VISUALS = {
+  venti: "green-caped bard with braids and lyre, playful smile",
+  klee: "small girl with red hat, bomb bag, bright eyes",
+  jean: "blonde knight captain in tight ponytail, dignified posture",
+  bennett: "boy adventurer with goggles, bandages, optimistic grin",
+  hutao: "funeral director girl in black and red chinese dress, ghost fire",
+  childe: "orange-haired young man, grey coat, dual blades ready",
+  keqing: "purple-haired planner in elegant dress, lightning motif",
+  yae: "pink fox priestess with many tails illusion, sly elegance",
+  zhongli: "tall man in brown suit, geo amber eyes, calm scholar",
+  nahida: "small sage with white green hair, lotus wisdom aura",
+  kazuha: "samurai poet in red leaf scarf, autumn wind",
+  wanderer: "floating hat youth in dark blue, sharp gaze",
+  ganyu: "horned secretary with blue hair, gentle qilin aura",
+  ayaka: "noble lady with light blue ponytail, fan and frost",
+  albedo: "blonde alchemist artist in white coat, sketching",
+  raiden: "purple braided warrior shogun, katana lightning",
+  diluc: "red-haired winery owner in black coat, fiery wings",
+  razor: "wolf boy with white hair, wild forest companion",
+};
+
+CHARACTERS.forEach((c) => {
+  c.visual = CHARACTER_VISUALS[c.id] || "fantasy traveler";
+});
